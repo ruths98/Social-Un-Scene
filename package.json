@@ -1,0 +1,23 @@
+{
+  "name": "social-un-scene",
+  "version": "1.0.0",
+  "description": "social media database, not for deployment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruths98/Social-Un-Scene.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ruths98/Social-Un-Scene/issues"
+  },
+  "homepage": "https://github.com/ruths98/Social-Un-Scene#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.2.2"
+  }
+}
