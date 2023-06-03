@@ -2,7 +2,7 @@ const { connect, connection } = require('mongoose');
 
 
 const connectionString =
-  process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/studentsDB';//change db name
+  process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/socialUnSceneDB';//change db name
 
 connect(connectionString, {
   useNewUrlParser: true,
