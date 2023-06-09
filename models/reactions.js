@@ -1,0 +1,5 @@
+const reactionSchema = new Schema(
+{
+    
+}
+)

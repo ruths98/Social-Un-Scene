@@ -1,24 +1,32 @@
-const { Schema, model } = require('mongoose');
-const usersSchema = require('./users');//change this to connect with associated information within this folder
+const { Schema, model, Types } = require('mongoose');
+// const thoughtsSchema = require('./thoughts');//change this to connect with associated information within this folder
 
 // Schema to create Users model
 const usersSchema = new Schema(
   {
-    userId: {
-        type: Schema.Types.ObjectId,
-        default: () => new Types.ObjectId(),
-    },
-    username: {
+       username: {
       type: String,
       required: true,
+      unique: true,
       max_length: 50,
     },
     email: {
-        type:email,
+        type:String,
         required: true,
+        unique: true,
+        validator: {
+
+        }
     },
  
-    thoughts: [thoughtsSchema],
+    thoughts: [{
+      type: Schema.Types.ObjectId,
+      ref: 'thoughts'
+    }],
+    friends: [{
+      type: Schema.Types.ObjectId,
+      ref: 'users',
+    }]
   },
   {
     toJSON: {
