@@ -11,7 +11,7 @@ const thoughtsSchema = new Schema(
             required: true,
             maxlength: 50,
         },
-        thoughtContent: {
+        thoughtText: {
             type: String,
             required: true,
         },

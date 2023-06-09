@@ -33,7 +33,7 @@ module.exports = {
       .then((user) =>
         !user
           ? res.status(404).json({ message: 'No user with that ID' })
-          : Student.deleteMany({ _id: { $in: users.students } })
+          : user.deleteMany({ _id: { $in: users.thoughts } })
       )
       .then(() => res.json({ message: 'User and students deleted!' }))
       .catch((err) => res.status(500).json(err));
@@ -52,5 +52,16 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
-};
+
+  addFriend(req, res) {
+  Users.create(req.body)
+  .then((user) => res.json(user))
+  .catch((err) => {
+    console.log(err);
+    return res.status(500).json(err);
+  });
+}
+}
+
+
 

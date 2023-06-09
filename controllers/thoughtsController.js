@@ -1,54 +1,54 @@
 const { Users, Thoughts } = require('../models');
 
 module.exports = {
-  // Get all users
-  getUsers(req, res) {
-    User.find()
-      .then((users) => res.json(users))
+  // Get all thoughts
+  getThoughts(req, res) {
+    Thoughts.find()
+      .then((thoughts) => res.json(thoughts))
       .catch((err) => res.status(500).json(err));
   },
-  // Get a users
-  getSingleusers(req, res) {
-    User.findOne({ _id: req.params.userId })
+  // Get a thought
+  getSingleThought(req, res) {
+    Thoughts.findOne({ _id: req.params.thoughtId })
       .select('-__v')
-      .then((user) =>
-        !user
-          ? res.status(404).json({ message: 'No user with that ID' })
-          : res.json(user)
+      .then((thought) =>
+        !thought
+          ? res.status(404).json({ message: 'No thought with that ID' })
+          : res.json(thought)
       )
       .catch((err) => res.status(500).json(err));
   },
-  // Create a user
-  createUser(req, res) {
-    User.create(req.body)
-      .then((user) => res.json(user))
+  // Create a thought
+  createThought(req, res) {
+    Thoughts.create(req.body)
+      .then((thought) => res.json(thought))
       .catch((err) => {
         console.log(err);
         return res.status(500).json(err);
       });
   },
-  // Delete a user
-  deleteUser(req, res) {
-    User.findOneAndDelete({ _id: req.params.userId })
-      .then((user) =>
-        !user
-          ? res.status(404).json({ message: 'No user with that ID' })
-          : Student.deleteMany({ _id: { $in: user.students } })
+  // Delete a thought
+  deleteThought(req, res) {
+    Thoughts.findOneAndDelete({ _id: req.params.thoughtId })
+      .then((thought) =>
+        !thought
+          ? res.status(404).json({ message: 'No thought with that ID' })
+          : Thoughts.deleteMany({ _id: { $in: user.thoughts } })
       )
-      .then(() => res.json({ message: 'User and students deleted!' }))
+      .then(() => res.json({ message: 'User and thoughts deleted!' }))
       .catch((err) => res.status(500).json(err));
   },
-  // Update a user
-  updateUser(req, res) {
-    User.findOneAndUpdate(
-      { _id: req.params.userId },
+  // Update a thought
+  updateThought(req, res) {
+    Thoughts.findOneAndUpdate(
+      { _id: req.params.thoughtId },
       { $set: req.body },
       { runValidators: true, new: true }
     )
-      .then((user) =>
-        !user
-          ? res.status(404).json({ message: 'No user with this id!' })
-          : res.json(user)
+      .then((thought) =>
+        !thought
+          ? res.status(404).json({ message: 'No thought with this id!' })
+          : res.json(thought)
       )
       .catch((err) => res.status(500).json(err));
   },
