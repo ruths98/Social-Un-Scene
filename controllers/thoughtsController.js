@@ -19,27 +19,31 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
   // Create a thought
-  async createThought  (req, res) {
-    //use the text of the body to populate the thought document
-    const dbThoughtData = await Thoughts.create(req.body);
-    //find the user with the id in the params, push the created thought by finding it via id
+  async createThought(req, res) {
+    try {
+      //use the text of the body to populate the thought document
+      const dbThoughtData = await Thoughts.create(req.body);
+      //find the user with the id in the params, push the created thought by finding it via id
       const dbUserData = await Users.findOneAndUpdate(
         { _id: req.body.userId },
         { $push: { thoughts: dbThoughtData._id } },
         { new: true }
       )
-    // Thoughts.create(req.body)
-      .then((thought) => 
-      !dbUserData
-      ? res.json({
-        message: 'No user with that id!'
-      })
-      : res.json('created:' + thought)
-      )
-      .catch((err) => {
-        console.log(err);
-        return res.status(500).json(err);
-      });
+      if (!dbUserData) {
+        res.json({
+          message: 'No user with that id!'
+        })
+      }
+
+      else {
+        res.json(dbThoughtData)
+      }
+
+    }
+    catch (err) {
+      console.log(err);
+      return res.status(500).json(err);
+    };
   },
   // Delete a thought
   deleteThought(req, res) {
@@ -67,13 +71,34 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
 
-  addReaction(req, res) {
-    Reactions.create(req.body)
-      .then((reaction) => res.json(reaction))
-      .catch((err) => {
+  async addReaction(req, res) {
+    
+      try {
+        //find the user with the id in the params, push the created thought by finding it via id
+        const dbThoughtData = await Thoughts.findOneAndUpdate(
+          { _id: req.params.thoughtId },
+          { $push: { reactions:{
+            thoughtId: req.params.thoughtId,
+            ...req.body
+          } } },
+          { new: true }
+        )
+        if (!dbThoughtData) {
+          res.json({
+            message: 'No thought found!'
+          })
+        }
+  
+        else {
+          res.json(dbThoughtData)
+        }
+  
+      }
+      catch (err) {
         console.log(err);
         return res.status(500).json(err);
-      });
+      };
+    
   },
   // Delete a reaction
   deleteReaction(req, res) {
