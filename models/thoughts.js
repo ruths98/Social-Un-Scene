@@ -1,4 +1,4 @@
-const { Schema, Types, model} = require('mongoose');
+const { Schema, model, Types} = require('mongoose');
 
 const thoughtsSchema = new Schema(
     {
@@ -7,6 +7,7 @@ const thoughtsSchema = new Schema(
             default: () => new Types.ObjectId(),
         },
         username: { //who posted it
+            ref: 'Users',
             type: String,
             required: true,
             maxlength: 50,
@@ -28,6 +29,6 @@ const thoughtsSchema = new Schema(
         id: false,
     }
 );
-const Thoughts = model('thoughts', thoughtsSchema);
+const Thoughts = model('Thought', thoughtsSchema);
 
 module.exports = Thoughts;

@@ -1,4 +1,4 @@
-const { Users, Thoughts } = require('../models');
+const { Users, Thoughts, Reactions } = require('../models');
 
 module.exports = {
   // Get all thoughts
@@ -19,9 +19,23 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
   // Create a thought
-  createThought(req, res) {
-    Thoughts.create(req.body)
-      .then((thought) => res.json(thought))
+  async createThought  (req, res) {
+    //use the text of the body to populate the thought document
+    const dbThoughtData = await Thoughts.create(req.body);
+    //find the user with the id in the params, push the created thought by finding it via id
+      const dbUserData = await Users.findOneAndUpdate(
+        { _id: req.body.userId },
+        { $push: { thoughts: dbThoughtData._id } },
+        { new: true }
+      )
+    // Thoughts.create(req.body)
+      .then((thought) => 
+      !dbUserData
+      ? res.json({
+        message: 'No user with that id!'
+      })
+      : res.json('created:' + thought)
+      )
       .catch((err) => {
         console.log(err);
         return res.status(500).json(err);
@@ -50,6 +64,26 @@ module.exports = {
           ? res.status(404).json({ message: 'No thought with this id!' })
           : res.json(thought)
       )
+      .catch((err) => res.status(500).json(err));
+  },
+
+  addReaction(req, res) {
+    Reactions.create(req.body)
+      .then((reaction) => res.json(reaction))
+      .catch((err) => {
+        console.log(err);
+        return res.status(500).json(err);
+      });
+  },
+  // Delete a reaction
+  deleteReaction(req, res) {
+    Reactions.findOneAndDelete({ _id: req.params.reactionId })
+      .then((reaction) =>
+        !reaction
+          ? res.status(404).json({ message: 'No reaction with that ID' })
+          : Reactions.deleteMany({ _id: { $in: thoughts.reactions } })
+      )
+      .then(() => res.json({ message: 'thoughts and reactions deleted!' }))
       .catch((err) => res.status(500).json(err));
   },
 };

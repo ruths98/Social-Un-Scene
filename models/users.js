@@ -25,12 +25,17 @@ const usersSchema = new Schema(
       }
     },
 
-    thoughts: [thoughtsSchema],
+    thoughts: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Thought',
+      },
+    ],
     friends: [{
       type: Schema.Types.ObjectId,
-      ref: 'users',
+      ref: 'User',
     }]
-    //potentially 'ref: [userSchema]'
+    //can I delete the friend schema?
   },
   {
     toJSON: {

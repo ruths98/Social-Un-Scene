@@ -4,8 +4,13 @@ module.exports = {
   // Get all users
   getUsers(req, res) {
     Users.find()
+    .populate('thoughts')
       .then((users) => res.json(users))
-      .catch((err) => res.status(500).json(err));
+      .catch((err) => {
+        res.status(500).json(err)
+        console.log(err)
+      })
+      
   },
   // Get a users
   getSingleUser(req, res) {
@@ -54,13 +59,31 @@ module.exports = {
   },
 
   addFriend(req, res) {
-  Users.create(req.body)
+  Friend.create(req.body)
   .then((user) => res.json(user))
   .catch((err) => {
     console.log(err);
     return res.status(500).json(err);
   });
-}
+},
+
+deleteFriend(req, res) {
+  Friend.findOneAndDelete({ _id: req.params.userId })
+    .then((user) =>
+      !user
+        ? res.status(404).json({ message: 'No user with that ID' })
+        : user.deleteMany({ _id: { $in: users.thoughts } })
+    )
+    .then(() => res.json({ message: 'User and students deleted!' }))
+    .catch((err) => res.status(500).json(err));
+},
+
+getFriends(req, res) {
+  Friend.find()
+    .then((users) => res.json(users))
+    .catch((err) => res.status(500).json(err));
+},
+
 }
 
 
