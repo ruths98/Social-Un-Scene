@@ -1,2 +1,2 @@
 # Social-Un-Scene
-Module 18 not deployed social media site
+Module 18 not deployed soc
